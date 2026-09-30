@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gestión Académica</title>
+    <title>Plataforma Integral Educativa - Gestor Multirrol</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,7 @@
         }
 
         body {
-            background-color: #f4f6f9;
+            background-color: #f0f2f5;
             color: #333;
             display: flex;
             flex-direction: column;
@@ -21,48 +21,85 @@
         }
 
         header {
-            background-color: #2c3e50;
+            background-color: #1e3c72;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
             color: white;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .role-selector-bar {
+            background-color: #ffffff;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .role-selector-bar label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .role-selector-bar select {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: 2px solid #2a5298;
+            font-weight: bold;
+            color: #1e3c72;
+            cursor: pointer;
         }
 
         .container {
-            max-width: 900px;
-            margin: 30px auto;
+            max-width: 1000px;
+            margin: 20px auto;
             background: white;
             padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             flex: 1;
         }
 
+        .role-banner {
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .banner-docente { background-color: #e3f2fd; color: #0d47a1; border-left: 5px solid #1976d2; }
+        .banner-estudiante { background-color: #e8f5e9; color: #1b5e20; border-left: 5px solid #388e3c; }
+        .banner-padre { background-color: #fff3e0; color: #e65100; border-left: 5px solid #f57c00; }
+
         .form-group {
             display: grid;
-            grid-template-columns: 2fr 3fr 1.5fr 1fr;
+            grid-template-columns: 1.5fr 2fr 1fr 1.5fr 1fr;
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         input, select, button {
             padding: 10px 12px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 14px;
         }
 
         button {
-            background-color: #3498db;
+            background-color: #2a5298;
             color: white;
             border: none;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.3s;
+            transition: background 0.2s;
         }
 
         button:hover {
-            background-color: #2980b9;
+            background-color: #1e3c72;
         }
 
         table {
@@ -73,8 +110,9 @@
 
         th, td {
             text-align: left;
-            padding: 12px;
+            padding: 12px 10px;
             border-bottom: 1px solid #e0e0e0;
+            font-size: 14px;
         }
 
         th {
@@ -85,17 +123,28 @@
         .badge {
             padding: 4px 8px;
             border-radius: 4px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: bold;
+            display: inline-block;
         }
 
         .Pendiente { background-color: #ffeaa7; color: #d63031; }
         .Completada { background-color: #55efc4; color: #00b894; }
+        .Revisada { background-color: #74b9ff; color: #0984e3; }
+
+        .role-tag {
+            font-size: 10px;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: #eee;
+            margin-left: 5px;
+        }
 
         .btn-action {
-            padding: 5px 10px;
+            padding: 5px 8px;
             font-size: 12px;
-            margin-right: 5px;
+            margin-right: 3px;
         }
 
         .btn-check { background-color: #2ecc71; }
@@ -105,66 +154,136 @@
         .btn-delete:hover { background-color: #c0392b; }
 
         .summary {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
+            margin-top: 25px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            text-align: center;
+        }
+
+        .summary-card {
             background-color: #f8f9fa;
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .summary-card div {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1e3c72;
+            margin-top: 5px;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>📋 Sistema de Gestión Académica</h1>
+        <h1>🎓 Portal Educativo Integral</h1>
+        <p style="font-size: 14px; opacity: 0.9; margin-top: 5px;">Módulo de Gestión para Docentes, Estudiantes y Padres de Familia</p>
     </header>
 
+    <div class="role-selector-bar">
+        <label for="userRole">Modo de Vista (Perfil Activo):</label>
+        <select id="userRole" onchange="actualizarModoRol()">
+            <option value="Docente">👨‍🏫 Docente / Profesor</option>
+            <option value="Estudiante" selected>👨‍🎓 Estudiante</option>
+            <option value="Padre">👨‍👩‍👧 Padre de Familia / Acudiente</option>
+        </select>
+    </div>
+
     <div class="container">
-        <h2>Agregar Registro</h2>
+        <div id="roleBanner" class="role-banner banner-estudiante">
+            <!-- Texto dinámico según rol -->
+        </div>
+
+        <h3 id="formTitle">Registrar Actividad o Tarea</h3>
         <br>
         <form id="taskForm" class="form-group">
             <input type="text" id="materia" placeholder="Materia / Asignatura" required>
-            <input type="text" id="descripcion" placeholder="Descripción de la tarea" required>
+            <input type="text" id="descripcion" placeholder="Detalle de la tarea / nota" required>
             <select id="prioridad">
                 <option value="Alta">Prioridad Alta</option>
                 <option value="Media" selected>Prioridad Media</option>
                 <option value="Baja">Prioridad Baja</option>
             </select>
-            <button type="submit">Guardar</button>
+            <input type="text" id="observacion" placeholder="Observación / Calificación (Opcional)">
+            <button type="submit" id="btnSubmit">Publicar Tarea</button>
         </form>
 
         <table>
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Materia</th>
+                    <th>Asignatura</th>
                     <th>Descripción</th>
-                    <th>Prioridad</th>
+                    <th>Origen</th>
+                    <th>Observación / Nota</th>
                     <th>Estado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody id="tablaTareas">
-                <!-- Se puebla dinámicamente -->
+                <!-- Filas dinámicas -->
             </tbody>
         </table>
 
         <div class="summary">
-            <span>Total de Pendientes: <span id="cantPendientes">0</span></span>
-            <span>Total de Completadas: <span id="cantCompletadas">0</span></span>
+            <div class="summary-card">
+                <span>Tareas Pendientes</span>
+                <div id="cantPendientes">0</div>
+            </div>
+            <div class="summary-card">
+                <span>Entregadas / Completadas</span>
+                <div id="cantCompletadas">0</div>
+            </div>
+            <div class="summary-card">
+                <span>Revisadas por Docente</span>
+                <div id="cantRevisadas">0</div>
+            </div>
         </div>
     </div>
 
     <script>
-        let tareas = [];
+        // Cargar datos previos o inicializar vacíos
+        let tareas = JSON.parse(localStorage.getItem('tareas_educativas')) || [
+            { id: 1, materia: "Matemáticas", descripcion: "Resolver guía de ecuaciones de primer grado", prioridad: "Alta", observacion: "Traer firmado por el acudiente", estado: "Pendiente", creador: "Docente" },
+            { id: 2, materia: "Ciencias", descripcion: "Preparar maqueta de la célula vegetal", prioridad: "Media", observacion: "Evaluación sobre 5.0", estado: "Completada", creador: "Docente" }
+        ];
 
         const taskForm = document.getElementById('taskForm');
         const tablaTareas = document.getElementById('tablaTareas');
-        const cantPendientes = document.getElementById('cantPendientes');
-        const cantCompletadas = document.getElementById('cantCompletadas');
+        const userRoleSelect = document.getElementById('userRole');
+        const roleBanner = document.getElementById('roleBanner');
+        const formTitle = document.getElementById('formTitle');
+        const btnSubmit = document.getElementById('btnSubmit');
+
+        function guardarStorage() {
+            localStorage.setItem('tareas_educativas', JSON.stringify(tareas));
+        }
+
+        function actualizarModoRol() {
+            const rol = userRoleSelect.value;
+            
+            if (rol === 'Docente') {
+                roleBanner.className = 'role-banner banner-docente';
+                roleBanner.innerHTML = '<strong>Modo Docente:</strong> Puedes asignar tareas a la clase, agregar observaciones pedagógicas, colocar notas y revisar entregas.';
+                formTitle.textContent = 'Asignar Nueva Tarea a la Clase';
+                btnSubmit.textContent = 'Publicar Tarea';
+            } else if (rol === 'Estudiante') {
+                roleBanner.className = 'role-banner banner-estudiante';
+                roleBanner.innerHTML = '<strong>Modo Estudiante:</strong> Consulta tus tareas asignadas, regístrate compromisos personales y marca tus tareas como completadas.';
+                formTitle.textContent = 'Agregar Recordatorio / Tarea Personal';
+                btnSubmit.textContent = 'Guardar Tarea';
+            } else {
+                roleBanner.className = 'role-banner banner-padre';
+                roleBanner.innerHTML = '<strong>Modo Padre de Familia:</strong> Visualiza las tareas asignadas a tu hijo, sus notas/observaciones del docente y da seguimiento al cumplimiento.';
+                formTitle.textContent = 'Registrar Nota o Compromiso del Hogar';
+                btnSubmit.textContent = 'Guardar Recordatorio';
+            }
+
+            render();
+        }
 
         taskForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -172,6 +291,8 @@
             const materia = document.getElementById('materia').value.trim();
             const descripcion = document.getElementById('descripcion').value.trim();
             const prioridad = document.getElementById('prioridad').value;
+            const observacion = document.getElementById('observacion').value.trim();
+            const creador = userRoleSelect.value;
 
             if (!materia || !descripcion) return;
 
@@ -180,49 +301,73 @@
                 materia,
                 descripcion,
                 prioridad,
-                estado: 'Pendiente'
+                observacion: observacion || "Sin observaciones",
+                estado: 'Pendiente',
+                creador
             };
 
             tareas.push(nuevaTarea);
+            guardarStorage();
             taskForm.reset();
             render();
         });
 
         function cambiarEstado(id) {
-            tareas = tareas.map(t => t.id === id ? { ...t, estado: t.estado === 'Pendiente' ? 'Completada' : 'Pendiente' } : t);
+            const rolActual = userRoleSelect.value;
+            tareas = tareas.map(t => {
+                if (t.id === id) {
+                    let nuevoEstado = t.estado;
+                    if (rolActual === 'Docente') {
+                        nuevoEstado = t.estado === 'Revisada' ? 'Pendiente' : 'Revisada';
+                    } else {
+                        nuevoEstado = t.estado === 'Completada' ? 'Pendiente' : 'Completada';
+                    }
+                    return { ...t, estado: nuevoEstado };
+                }
+                return t;
+            });
+            guardarStorage();
             render();
         }
 
         function eliminarTarea(id) {
             tareas = tareas.filter(t => t.id !== id);
+            guardarStorage();
             render();
         }
 
         function render() {
             tablaTareas.innerHTML = '';
+            const rolActual = userRoleSelect.value;
 
             tareas.forEach((t, index) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td>${index + 1}</td>
                     <td><strong>${t.materia}</strong></td>
-                    <td>${t.descripcion}</td>
-                    <td>${t.prioridad}</td>
+                    <td>${t.descripcion} <span class="badge" style="background:#eee; color:#333;">${t.prioridad}</span></td>
+                    <td><span class="role-tag">${t.creador}</span></td>
+                    <td><em>${t.observacion}</em></td>
                     <td><span class="badge ${t.estado}">${t.estado}</span></td>
                     <td>
-                        <button class="btn-action btn-check" onclick="cambiarEstado(${t.id})">✓</button>
-                        <button class="btn-action btn-delete" onclick="eliminarTarea(${t.id})">✕</button>
+                        <button class="btn-action btn-check" title="Cambiar Estado" onclick="cambiarEstado(${t.id})">
+                            ${rolActual === 'Docente' ? '🔍 Revisar' : '✓ Completar'}
+                        </button>
+                        ${(rolActual === 'Docente' || t.creador === rolActual) ? 
+                            `<button class="btn-action btn-delete" title="Eliminar" onclick="eliminarTarea(${t.id})">✕</button>` : ''}
                     </td>
                 `;
                 tablaTareas.appendChild(tr);
             });
 
-            const pendientes = tareas.filter(t => t.estado === 'Pendiente').length;
-            const completadas = tareas.filter(t => t.estado === 'Completada').length;
-
-            cantPendientes.textContent = pendientes;
-            cantCompletadas.textContent = completadas;
+            document.getElementById('cantPendientes').textContent = tareas.filter(t => t.estado === 'Pendiente').length;
+            document.getElementById('cantCompletadas').textContent = tareas.filter(t => t.estado === 'Completada').length;
+            document.getElementById('cantRevisadas').textContent = tareas.filter(t => t.estado === 'Revisada').length;
         }
+
+        // Inicializar interfaz
+        actualizarModoRol();
     </script>
 </body>
 </html>
+       
